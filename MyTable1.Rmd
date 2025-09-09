@@ -1,0 +1,41 @@
+---
+title: "MyTable1"
+output: html_document
+date: "2025-09-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library("devtools")
+devtools::install_github("alanbrookhart/NAMCS")
+library(NAMCS)
+library(tableone)
+library(survey)
+library(knitr)
+library(DT)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r summary}
+summary(sta)
+```
+```{r data}
+datatable(sta)
+```
+
+```{r Table1}
+factor_vars = c("year", "region", "arthritis", "asthma", "cancer", "cerebrovascular_disease", "chronic_kidney_disease", "heart_failure", "chronic_pulmonary_disease", "depression", "diabetes", "hyperlipidemia", "hypertension", "coronory_artery_disease", "osteoporosis",  "anti_hypertensive_use", "statin_use", "h2_antagonist_use", "ppi_use", "aspirin_use", "anti_coagulant_use", "corticosteroid_use", "sex", "race", "incident_pud")
+
+table1 = CreateTableOne(data = ns, vars = c("age", factor_vars), factorVars = factor_vars, 
+                        strata = "cox2_initiation", test = FALSE, smd = TRUE) 
+
+print(table1, smd = TRUE, printToggle = FALSE) %>% kable()
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
